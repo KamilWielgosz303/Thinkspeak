@@ -7,6 +7,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QNetworkReply>
+#include <QPainter>
+#include "chart.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,5 +28,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QJsonArray jsarr;
 };
 #endif // MAINWINDOW_H
