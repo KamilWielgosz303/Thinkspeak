@@ -28,6 +28,10 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    Chart *chart;
     QJsonArray jsarr;
+    QVector<double> temperatureData;
+     void paintEvent(QPaintEvent *event);
+     bool g;
 };
 #endif // MAINWINDOW_H

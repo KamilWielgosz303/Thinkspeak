@@ -17,10 +17,14 @@ MainWindow::MainWindow(QWidget *parent)
     restclient = new QNetworkAccessManager(this);
     QNetworkReply *reply = restclient->get(request);
     QObject::connect(restclient, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply *)));
+    g = false;
+    chart = new Chart();
 }
 
 MainWindow::~MainWindow()
 {
+    delete chart;
+    delete restclient;
     delete ui;
 }
 
@@ -29,6 +33,7 @@ void MainWindow::replyFinished(QNetworkReply *reply){
     jsdoc = QJsonDocument::fromJson(reply->readAll());
     QJsonObject jsobj = jsdoc.object();
     jsarr = jsobj["feeds"].toArray();
+    qDebug()<<jsarr.size();
     foreach (const QJsonValue &value, jsarr) {
     QJsonObject jsob = value.toObject();
     qDebug() << jsob["entry_id"].toInt();
@@ -36,9 +41,22 @@ void MainWindow::replyFinished(QNetworkReply *reply){
     qDebug() << jsob["field2"].toString();
     qDebug() << jsob["field3"].toString();
     qDebug() << jsob["created_at"].toString();
+    temperatureData.push_front(jsob["field1"].toString().toDouble());
     }
-
+    qDebug()<<temperatureData.size();
+    g = true;
+    repaint();
     reply->deleteLater();
-    qDebug() << reply->readAll();
+
 }
 
+void MainWindow::paintEvent(QPaintEvent *event){
+    Q_UNUSED(event)
+    QPainter painter(this);
+    chart->drawLinearGrid(painter, centralWidget()->geometry());
+    if(g){
+    chart->drawLinearData(painter, temperatureData);
+
+    update();
+    }
+}

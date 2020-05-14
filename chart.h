@@ -6,6 +6,9 @@
 #include <math.h>
 #include <vector>
 
+#define MX      40
+#define MY      40
+
 enum ChartMode {
     Temperature,
     Humidity,
@@ -23,7 +26,7 @@ public:
     int minValueX=0, maxValueX=100;
     int minValueY=-100, maxValueY=100;
     int chartMode=0;
-    double markerX=1, markerY=0;
+    double markerX=1, markerY=1;
     int dataSize;
 
     QColor backgroundColor=Qt::black;
