@@ -1,23 +1,24 @@
 #include "chart_draw.h"
-#include "ui_mainwindow.h"
-#include <QtCharts/QChartView>
-#include <QtCharts/QLineSeries>
-#include <QtCharts/QCategoryAxis>
 
-QT_CHARTS_USE_NAMESPACE
+
 
 chart_draw::chart_draw()
 {
 
 }
-void chart_draw::drawTemp(QVector<double> data,QVector<QString> time,QMainWindow *wind){
+void chart_draw::drawTemp(QVector<double> data,QVector<QString> time){
 
         QLineSeries *series = new QLineSeries();
+        series->append(0,6);
+        series->append(2,1);
+        series->append(2,3);
+        series->append(5,8);
+        series->append(7,3);
         *series << QPointF(0, 6) << QPointF(9, 4) << QPointF(15, 20) << QPointF(25, 12) << QPointF(29, 26);
         QChart *chart = new QChart();
         chart->legend()->hide();
         chart->addSeries(series);
-    //![1]
+    /*//![1]
 
     //![2]
         // Customize series
@@ -98,9 +99,11 @@ void chart_draw::drawTemp(QVector<double> data,QVector<QString> time,QMainWindow
         series->attachAxis(axisY);
     //![4]
 
-    //![5]
+    //![5]*/
+        qDebug("Wykonalem sie");
         QChartView *chartView = new QChartView(chart);
-        wind->setCentralWidget(chartView);
+        chartView->setRenderHint(QPainter::Antialiasing);
+        emit sendSignal(chartView);                          //Tu jest pierwsza wersja wykresu i przesylamy go do mainwindow
 
 
 
@@ -110,3 +113,5 @@ void chart_draw::drawTemp(QVector<double> data,QVector<QString> time,QMainWindow
 
 
 }
+
+

@@ -2,12 +2,14 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <unistd.h>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QNetworkReply>
 #include <QPainter>
+#include <QObject>
 #include "chart.h"
 #include "chart_draw.h"
 
@@ -24,11 +26,19 @@ public:
     ~MainWindow();
     QNetworkAccessManager *restclient;
 
-    public slots:
+public slots:
     void replyFinished(QNetworkReply *reply);
+    void getChart(QChartView *s1);
+
+private slots:
+    void on_actionConnect_changed();
+
+    void on_actionConnect_triggered();
 
 private:
     Ui::MainWindow *ui;
+    chart_draw *s;
+    QChartView *temperature;
     Chart *chart;
     QJsonArray jsarr;
     QVector<double> temperatureData;

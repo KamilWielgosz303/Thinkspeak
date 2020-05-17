@@ -14,20 +14,29 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="horizontalWidget" native="true">
+   <widget class="QFrame" name="horizontalFrame">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>80</y>
-      <width>195</width>
-      <height>80</height>
+      <x>29</x>
+      <y>40</y>
+      <width>511</width>
+      <height>291</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMaximumSize</enum>
-     </property>
-    </layout>
+    <layout class="QHBoxLayout" name="horizontalLayout"/>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>110</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -66,9 +75,6 @@
    <addaction name="separator"/>
   </widget>
   <action name="actionConnect">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="text">
     <string>Connect</string>
    </property>
