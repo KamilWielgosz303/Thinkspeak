@@ -6,16 +6,107 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>695</width>
+    <height>441</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar"/>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="horizontalWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>80</y>
+      <width>195</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMaximumSize</enum>
+     </property>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>695</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionConnect"/>
+   <addaction name="separator"/>
+   <addaction name="separator"/>
+   <addaction name="actionTemperature"/>
+   <addaction name="separator"/>
+   <addaction name="actionHumidity"/>
+   <addaction name="separator"/>
+   <addaction name="actionPressure"/>
+   <addaction name="separator"/>
+  </widget>
+  <action name="actionConnect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Connect</string>
+   </property>
+   <property name="toolTip">
+    <string>Connect</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionTemperature">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Temperature</string>
+   </property>
+  </action>
+  <action name="actionHumidity">
+   <property name="text">
+    <string>Humidity</string>
+   </property>
+  </action>
+  <action name="actionPressure">
+   <property name="text">
+    <string>Pressure</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

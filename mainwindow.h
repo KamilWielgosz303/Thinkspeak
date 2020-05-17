@@ -9,6 +9,7 @@
 #include <QNetworkReply>
 #include <QPainter>
 #include "chart.h"
+#include "chart_draw.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,6 +32,8 @@ private:
     Chart *chart;
     QJsonArray jsarr;
     QVector<double> temperatureData;
+    QVector<QString> temperatureTime;
+    QVector<QString> tempTime;
      void paintEvent(QPaintEvent *event);
      bool g;
 };

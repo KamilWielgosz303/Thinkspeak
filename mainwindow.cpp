@@ -42,21 +42,37 @@ void MainWindow::replyFinished(QNetworkReply *reply){
     qDebug() << jsob["field3"].toString();
     qDebug() << jsob["created_at"].toString();
     temperatureData.push_front(jsob["field1"].toString().toDouble());
+    temperatureTime.push_front(jsob["created_at"].toString());
+
     }
-    qDebug()<<temperatureData.size();
+    for(int i=0;i<temperatureTime.size();i++){
+        tempTime.append(temperatureTime.at(i).mid(11,8));   // Wyłuskanie godzin
+    }
+
+    //qDebug()<<temperatureData.size();
+    //qDebug()<<tempTime.size();
+    qDebug()<<tempTime;
     g = true;
     repaint();
     reply->deleteLater();
 
 }
 
+
 void MainWindow::paintEvent(QPaintEvent *event){
-    Q_UNUSED(event)
+    /*Q_UNUSED(event)
     QPainter painter(this);
     chart->drawLinearGrid(painter, centralWidget()->geometry());
     if(g){
     chart->drawLinearData(painter, temperatureData);
-
-    update();
+    update();*/
+    qDebug("hehe");
+    if(ui->actionConnect->isChecked()){
+        chart_draw *rysuj = new chart_draw();
+        rysuj->drawTemp(temperatureData,tempTime,this);
+        update();
     }
-}
+    }
+
+
+

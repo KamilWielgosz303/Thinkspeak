@@ -1,8 +1,10 @@
 QT       += core gui network
+QT += charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
+
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -17,11 +19,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     chart.cpp \
+    chart_draw.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     chart.h \
+    chart_draw.h \
     mainwindow.h
 
 FORMS += \

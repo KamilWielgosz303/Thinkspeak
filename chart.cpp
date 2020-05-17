@@ -6,8 +6,8 @@ Chart::Chart(QObject *parent) : QObject(parent)
     gridNumY=10;
     minValueX=0;
     maxValueX=100;
-    minValueY=0;
-    maxValueY=20;
+    minValueY=-10;
+    maxValueY=40;
     chartMode=Temperature;
     markerX=1;
     markerY=0;
