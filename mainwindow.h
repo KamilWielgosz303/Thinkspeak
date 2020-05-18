@@ -11,7 +11,6 @@
 #include <QPainter>
 #include <QObject>
 #include "chart.h"
-#include "chart.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -42,7 +41,5 @@ private:
     QVector<double> temperatureData;
     QVector<QString> temperatureTime;
     QVector<QString> tempTime;
-     void paintEvent(QPaintEvent *event);
-     bool g;
 };
 #endif // MAINWINDOW_H

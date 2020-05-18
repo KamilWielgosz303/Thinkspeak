@@ -4,17 +4,9 @@
 
 Chart::Chart()
 {
-    series.append(0,6);
-    series.append(2,1);
     chart = new QChart();
-    chart->legend()->hide();
-    chart->addSeries(&series);
-    chart->createDefaultAxes();
-       chart->setTitle("Simple line chart example");
-       chartView = new QChartView(chart);
-       chartView->setRenderHint(QPainter::Antialiasing);
 }
-void Chart::drawTemp(QVector<double> data,QVector<QString> time){
+void Chart::drawTemp(QVector<double> data,QVector<QString> time){ //niepotrzebna metoda na ten moment
 
 
     /*//![1]
@@ -112,3 +104,28 @@ void Chart::drawTemp(QVector<double> data,QVector<QString> time){
 }
 
 
+void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
+    this->time = time;
+    this->data = data;
+    dataPoints.clear();
+    for(int i = 0; i<data.size();i++){
+        QPointF p(i,data[i]);
+        dataPoints.append(p);
+    }
+    qDebug() << dataPoints;
+    series.clear();
+    series.append(dataPoints);
+    chart->addSeries(&series);
+    chart->legend()->hide();
+    chart->createDefaultAxes();
+    chart->setTitle(name);
+    setLabelX();
+}
+
+Chart::~Chart(){
+    delete chart;
+}
+
+void Chart::setLabelX(){
+
+}

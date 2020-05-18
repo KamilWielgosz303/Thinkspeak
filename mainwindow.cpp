@@ -6,8 +6,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->chartView->setRenderHint(QPainter::Antialiasing);
     QUrl myurl;
     s = new Chart();
+    ui->chartView->setChart(s->chart);
     myurl.setScheme("http");
     myurl.setHost("api.thingspeak.com");
     myurl.setPath("/channels/1057622/feeds.json");
@@ -18,7 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
     restclient = new QNetworkAccessManager(this);
     QNetworkReply *reply = restclient->get(request);
     connect(restclient, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply *)));
-    g = false;
     chart = new Chart();
 
 
@@ -50,38 +51,24 @@ void MainWindow::replyFinished(QNetworkReply *reply){
 
     }
     for(int i=0;i<temperatureTime.size();i++){
-        tempTime.append(temperatureTime.at(i).mid(11,8));   // Wyłuskanie godzin
+        tempTime.append(temperatureTime.at(i).mid(11,5));   // Wyłuskanie godzin
     }
 
     qDebug()<<temperatureData.size();
     qDebug()<<tempTime.size();
     //qDebug()<<tempTime;
-    g = true;
     //repaint();
     reply->deleteLater();
 
 }
 
-
-void MainWindow::paintEvent(QPaintEvent *event){
-    /*Q_UNUSED(event)
-    QPainter painter(this);
-    chart->drawLinearGrid(painter, centralWidget()->geometry());
-    if(g){
-    chart->drawLinearData(painter, temperatureData);
-    update();
-    if(ui->actionConnect->isChecked()){
-        s-> drawTemp(temperatureData,tempTime);
-    }*/
-}
-
-void MainWindow::getChart(QChartView *s1){            //Slot do odbierania sygnału z wykresem
+void MainWindow::getChart(QChartView *s1){            //nieuzywane do wywalenia
     qDebug("Odbieram cos");
     //temperature = s1;
     //temperature->setParent(ui->horizontalFrame);
     update();
     //usleep(3000000);*/
-    QLineSeries *series = new QLineSeries();          //Druga wersja wykresu prostsza ale itak nie dziala
+    QLineSeries *series = new QLineSeries();
     series->append(0,6);
     series->append(2,1);
     series->append(2,3);
@@ -92,7 +79,7 @@ void MainWindow::getChart(QChartView *s1){            //Slot do odbierania sygna
     chart->legend()->hide();
     chart->addSeries(series);
     temperature = new QChartView(chart);
-    temperature->setRenderHint(QPainter::Antialiasing);
+
     temperature->setParent(ui->horizontalFrame);
     update();
 };
@@ -101,9 +88,8 @@ void MainWindow::getChart(QChartView *s1){            //Slot do odbierania sygna
 
 
 
-void MainWindow::on_actionConnect_triggered()
+void MainWindow::on_actionConnect_triggered() // kazAdy kolejny triggered do kolejnych przycisków tylko zmiana danych co nizej
 {
-    //s-> drawTemp(temperatureData,tempTime);
-    ui->chartView->setChart(s->chart);
-    ui->chartView->show();
+    s->setData(tempTime,temperatureData,"Temperatura");
+    ui->chartView->repaint();
 }

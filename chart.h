@@ -12,10 +12,9 @@ class Chart : public QObject
 
 public:
     Chart();
+    ~Chart();
     void drawTemp(QVector<double> data,QVector<QString> time);
-
-    QChartView *chartView;
-
+    void setData(QVector<QString>, QVector<double>, QString);
     QChart *chart;
 
 signals:
@@ -23,5 +22,9 @@ signals:
 
 private:
     QLineSeries series;
+    QVector<QString> time;
+    QVector<double> data;
+    QList<QPointF> dataPoints;
+    void setLabelX();
 };
 #endif // CHART_DRAW_H
