@@ -2,22 +2,18 @@
 
 
 
-chart_draw::chart_draw()
+Chart_draw::Chart_draw()
 {
-
+    chart.legend()->hide();
+    chart.addSeries(&series);
+    chart.createDefaultAxes();
+       chart.setTitle("Simple line chart example");
+       chartView = new QChartView(&chart);
+       chartView->setRenderHint(QPainter::Antialiasing);
 }
-void chart_draw::drawTemp(QVector<double> data,QVector<QString> time){
+void Chart_draw::drawTemp(QVector<double> data,QVector<QString> time){
 
-        QLineSeries *series = new QLineSeries();
-        series->append(0,6);
-        series->append(2,1);
-        series->append(2,3);
-        series->append(5,8);
-        series->append(7,3);
-        *series << QPointF(0, 6) << QPointF(9, 4) << QPointF(15, 20) << QPointF(25, 12) << QPointF(29, 26);
-        QChart *chart = new QChart();
-        chart->legend()->hide();
-        chart->addSeries(series);
+
     /*//![1]
 
     //![2]
@@ -101,9 +97,7 @@ void chart_draw::drawTemp(QVector<double> data,QVector<QString> time){
 
     //![5]*/
         qDebug("Wykonalem sie");
-        QChartView *chartView = new QChartView(chart);
-        chartView->setRenderHint(QPainter::Antialiasing);
-        emit sendSignal(chartView);                          //Tu jest pierwsza wersja wykresu i przesylamy go do mainwindow
+        //emit sendSignal(chartView);                          //Tu jest pierwsza wersja wykresu i przesylamy go do mainwindow
 
 
 

@@ -6,10 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    s = new chart_draw();
-    connect(s, &chart_draw::sendSignal, this , &MainWindow::getChart);
     QUrl myurl;
-
+    s = new Chart_draw();
     myurl.setScheme("http");
     myurl.setHost("api.thingspeak.com");
     myurl.setPath("/channels/1057622/feeds.json");
@@ -19,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     restclient = new QNetworkAccessManager(this);
     QNetworkReply *reply = restclient->get(request);
-    QObject::connect(restclient, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply *)));
+    connect(restclient, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply *)));
     g = false;
     chart = new Chart();
 
@@ -28,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete s;
     delete chart;
     delete restclient;
     delete ui;
@@ -56,9 +55,9 @@ void MainWindow::replyFinished(QNetworkReply *reply){
 
     //qDebug()<<temperatureData.size();
     //qDebug()<<tempTime.size();
-    qDebug()<<tempTime;
+    //qDebug()<<tempTime;
     g = true;
-    repaint();
+    //repaint();
     reply->deleteLater();
 
 }
@@ -104,5 +103,8 @@ void MainWindow::getChart(QChartView *s1){            //Slot do odbierania sygna
 
 void MainWindow::on_actionConnect_triggered()
 {
-    s-> drawTemp(temperatureData,tempTime);
+    //s-> drawTemp(temperatureData,tempTime);
+    this->setCentralWidget(s->chartView);
+    this->resize(400, 300);
+    this->show();
 }

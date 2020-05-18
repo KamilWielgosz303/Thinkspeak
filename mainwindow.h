@@ -37,7 +37,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    chart_draw *s;
+    Chart_draw *s;
     QChartView *temperature;
     Chart *chart;
     QJsonArray jsarr;
