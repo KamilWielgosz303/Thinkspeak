@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     QUrl myurl;
-    s = new Chart_draw();
+    s = new Chart();
     myurl.setScheme("http");
     myurl.setHost("api.thingspeak.com");
     myurl.setPath("/channels/1057622/feeds.json");
@@ -53,8 +53,8 @@ void MainWindow::replyFinished(QNetworkReply *reply){
         tempTime.append(temperatureTime.at(i).mid(11,8));   // Wyłuskanie godzin
     }
 
-    //qDebug()<<temperatureData.size();
-    //qDebug()<<tempTime.size();
+    qDebug()<<temperatureData.size();
+    qDebug()<<tempTime.size();
     //qDebug()<<tempTime;
     g = true;
     //repaint();
@@ -104,7 +104,6 @@ void MainWindow::getChart(QChartView *s1){            //Slot do odbierania sygna
 void MainWindow::on_actionConnect_triggered()
 {
     //s-> drawTemp(temperatureData,tempTime);
-    this->setCentralWidget(s->chartView);
-    this->resize(400, 300);
-    this->show();
+    ui->chartView->setChart(s->chart);
+    ui->chartView->show();
 }

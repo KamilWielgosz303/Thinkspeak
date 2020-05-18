@@ -1,77 +1,114 @@
 #include "chart.h"
 
-Chart::Chart(QObject *parent) : QObject(parent)
+
+
+Chart::Chart()
 {
-    gridNumX=10;
-    gridNumY=10;
-    minValueX=0;
-    maxValueX=100;
-    minValueY=-10;
-    maxValueY=40;
-    chartMode=Temperature;
-    markerX=1;
-    markerY=0;
-    dataSize=100;
+    series.append(0,6);
+    series.append(2,1);
+    chart = new QChart();
+    chart->legend()->hide();
+    chart->addSeries(&series);
+    chart->createDefaultAxes();
+       chart->setTitle("Simple line chart example");
+       chartView = new QChartView(chart);
+       chartView->setRenderHint(QPainter::Antialiasing);
+}
+void Chart::drawTemp(QVector<double> data,QVector<QString> time){
+
+
+    /*//![1]
+
+    //![2]
+        // Customize series
+        QPen pen(QRgb(0xfdb157));
+        pen.setWidth(5);
+        series->setPen(pen);
+
+        // Customize chart title
+        QFont font;
+        font.setPixelSize(18);
+        chart->setTitleFont(font);
+        chart->setTitleBrush(QBrush(Qt::white));
+        chart->setTitle("Customchart example");
+
+        // Customize chart background
+        QLinearGradient backgroundGradient;
+        backgroundGradient.setStart(QPointF(0, 0));
+        backgroundGradient.setFinalStop(QPointF(0, 1));
+        backgroundGradient.setColorAt(0.0, QRgb(0xd2d0d1));
+        backgroundGradient.setColorAt(1.0, QRgb(0x4c4547));
+        backgroundGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
+        chart->setBackgroundBrush(backgroundGradient);
+
+        // Customize plot area background
+        QLinearGradient plotAreaGradient;
+        plotAreaGradient.setStart(QPointF(0, 1));
+        plotAreaGradient.setFinalStop(QPointF(1, 0));
+        plotAreaGradient.setColorAt(0.0, QRgb(0x555555));
+        plotAreaGradient.setColorAt(1.0, QRgb(0x55aa55));
+        plotAreaGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
+        chart->setPlotAreaBackgroundBrush(plotAreaGradient);
+        chart->setPlotAreaBackgroundVisible(true);
+    //![2]
+
+    //![3]
+        QCategoryAxis *axisX = new QCategoryAxis();
+        QCategoryAxis *axisY = new QCategoryAxis();
+
+        // Customize axis label font
+        QFont labelsFont;
+        labelsFont.setPixelSize(12);
+        axisX->setLabelsFont(labelsFont);
+        axisY->setLabelsFont(labelsFont);
+
+        // Customize axis colors
+        QPen axisPen(QRgb(0xd18952));
+        axisPen.setWidth(2);
+        axisX->setLinePen(axisPen);
+        axisY->setLinePen(axisPen);
+
+        // Customize axis label colors
+        QBrush axisBrush(Qt::white);
+        axisX->setLabelsBrush(axisBrush);
+        axisY->setLabelsBrush(axisBrush);
+
+        // Customize grid lines and shades
+        axisX->setGridLineVisible(false);
+        axisY->setGridLineVisible(false);
+        axisY->setShadesPen(Qt::NoPen);
+        axisY->setShadesBrush(QBrush(QColor(0x99, 0xcc, 0xcc, 0x55)));
+        axisY->setShadesVisible(true);
+    //![3]
+
+    //![4]
+        axisX->append("low", 10);
+        axisX->append("optimal", 20);
+        axisX->append("high", 30);
+        axisX->setRange(0, 30);
+
+        axisY->append("slow", 10);
+        axisY->append("med", 20);
+        axisY->append("fast", 30);
+        axisY->setRange(0, 30);
+
+        chart->addAxis(axisX, Qt::AlignBottom);
+        chart->addAxis(axisY, Qt::AlignLeft);
+        series->attachAxis(axisX);
+        series->attachAxis(axisY);
+    //![4]
+
+    //![5]*/
+        qDebug("Wykonalem sie");
+        //emit sendSignal(chartView);                          //Tu jest pierwsza wersja wykresu i przesylamy go do mainwindow
+
+
+
+
+
+
+
+
 }
 
-void Chart::drawLinearGrid(QPainter &painter, QRect geometry)
-{
-    gx=geometry.x()+MX;
-    gy=geometry.y()+MY;
-    gw=geometry.width()-(2*MX);
-    gh=geometry.height()-(2*MY);
 
-    dx=gw/static_cast<double>(gridNumX);
-    dy=gh/static_cast<double>(gridNumY);
-
-    QPen pen;
-    pen.setWidth(1);
-    pen.setColor(backgroundColor);
-    painter.setPen(pen);
-    painter.setBrush(backgroundColor);
-    painter.drawRect(geometry);
-
-    // -----  frame ------------
-    pen.setStyle(Qt::SolidLine);
-    pen.setColor(gridColor);
-    pen.setWidth(2);
-    painter.setBrush(Qt::NoBrush);
-    painter.setPen(pen);
-    painter.drawRect(gx, gy, gw, gh);
-    // ----- grid ------------
-    pen.setStyle(Qt::DotLine);
-    pen.setWidth(1);
-    painter.setPen(pen);
-    for(int px=1; px<gridNumX; px++)
-        painter.drawLine(QLineF(gx+(px*dx), gy, gx+(px*dx), gy+gh));
-    for(int py=1; py<gridNumY; py++)
-        painter.drawLine(QLineF(gx, gy+(py*dy), gx+gw, gy+(py*dy)));
-    // ------ desc ----------
-    QFont font;
-    font.setPointSize(8);
-    painter.setFont(font);
-    pen.setColor(textColor);
-    painter.setPen(pen);
-    dvx=maxValueX-minValueX;
-    dvy=maxValueY-minValueY;
-    for(int px=0; px<=gridNumX; px++)
-        painter.drawText(QPointF(gx-(font.pointSize()/4)+px*dx, gy+gh+(font.pointSize()*2)), QString().sprintf("%d",static_cast<int>(minValueX+(dvx*px)/gridNumX)));
-    for(int py=0; py<=gridNumY; py++)
-        painter.drawText(QPointF(gx-(font.pointSize()*4), gy+(font.pointSize()/2)+py*dy), QString().sprintf("%4.1f",(maxValueY-(dvy*py)/gridNumY)));
-
-}
-void Chart::drawLinearData(QPainter &painter, QVector<double> &data)
-{
-    dx=gw/static_cast<double>(dataSize-1);
-    dy=gh/(maxValueY-minValueY);
-    gmy=gy+(gh/2);
-
-    QPen pen;
-    pen.setStyle(Qt::SolidLine);
-    pen.setColor(plotColor);
-    pen.setWidth(2);
-    painter.setPen(pen);
-
-    for(int i=1; i<dataSize; i++)
-        painter.drawLine(QLineF(gx+(i-1)*dx, gy+(data[i-1]*gh), gx+i*dx, gy+(data[i]*gh)));
-}

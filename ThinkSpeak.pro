@@ -18,13 +18,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     chart.cpp \
-    chart_draw.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     chart.h \
-    chart_draw.h \
     mainwindow.h
 
 FORMS += \

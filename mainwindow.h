@@ -11,7 +11,7 @@
 #include <QPainter>
 #include <QObject>
 #include "chart.h"
-#include "chart_draw.h"
+#include "chart.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,13 +31,11 @@ public slots:
     void getChart(QChartView *s1);
 
 private slots:
-    void on_actionConnect_changed();
-
     void on_actionConnect_triggered();
 
 private:
     Ui::MainWindow *ui;
-    Chart_draw *s;
+    Chart *s;
     QChartView *temperature;
     Chart *chart;
     QJsonArray jsarr;

@@ -1,44 +1,27 @@
-#ifndef CHART_H
-#define CHART_H
-
+#ifndef CHART_DRAW_H
+#define CHART_DRAW_H
+#include <QChar>
+#include <QtCharts>
 #include <QObject>
-#include <QPainter>
-#include <math.h>
-#include <vector>
 
-#define MX      40
-#define MY      40
-
-enum ChartMode {
-    Temperature,
-    Humidity,
-    Pressure
-};
+QT_CHARTS_USE_NAMESPACE
 
 class Chart : public QObject
 {
     Q_OBJECT
-public:
-    explicit Chart(QObject *parent = nullptr);
-    void drawLinearGrid(QPainter &painter, QRect geometry);
-    void drawLinearData(QPainter &painter, QVector<double> &data);
-    int gridNumX=10, gridNumY=10;
-    int minValueX=0, maxValueX=100;
-    int minValueY=-100, maxValueY=100;
-    int chartMode=0;
-    double markerX=1, markerY=1;
-    int dataSize;
 
-    QColor backgroundColor=Qt::black;
-    QColor gridColor=Qt::gray;
-    QColor textColor=Qt::white;
-    QColor plotColor=Qt::cyan;
-    QColor markersColorA=Qt::red;
-    QColor markersColorB=Qt::yellow;
+public:
+    Chart();
+    void drawTemp(QVector<double> data,QVector<QString> time);
+
+    QChartView *chartView;
+
+    QChart *chart;
+
+signals:
+    void sendSignal(QChartView *s1);
 
 private:
-    double dx, dy, dvx, dvy, dmkx, dmky;
-    int gx, gy, gw, gh, gmy;
+    QLineSeries series;
 };
-
-#endif // CHART_H
+#endif // CHART_DRAW_H
