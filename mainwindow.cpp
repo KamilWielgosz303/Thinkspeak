@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->chartView->setRenderHint(QPainter::Antialiasing);
     chart = new Chart();
     ui->chartView->setChart(chart->chart);
+    QUrl myurl;
     this->setCentralWidget(ui->horizontalFrame);
     myurl.setScheme("http");
     myurl.setHost("api.thingspeak.com");
