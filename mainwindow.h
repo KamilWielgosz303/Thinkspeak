@@ -11,6 +11,7 @@
 #include <QPainter>
 #include <QObject>
 #include "chart.h"
+#include "thread.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,21 +26,20 @@ public:
     ~MainWindow();
     QNetworkAccessManager *restclient;
 
-public slots:
-    void replyFinished(QNetworkReply *reply);
-    void getChart(QChartView *s1);
-
 private slots:
     void on_actionConnect_triggered();
+    void replyFinished(QNetworkReply * reply);
+    void getThinkspeakData();
 
 private:
     Ui::MainWindow *ui;
-    Chart *s;
-    QChartView *temperature;
     Chart *chart;
     QJsonArray jsarr;
     QVector<double> temperatureData;
     QVector<QString> temperatureTime;
     QVector<QString> tempTime;
+    Thread thread;
+    QUrl myurl;
+    QNetworkReply *reply;
 };
 #endif // MAINWINDOW_H

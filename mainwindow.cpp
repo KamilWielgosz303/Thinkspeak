@@ -3,37 +3,44 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow), temperatureData(100), temperatureTime(100), tempTime(100)
 {
     ui->setupUi(this);
     ui->chartView->setRenderHint(QPainter::Antialiasing);
-    QUrl myurl;
-    s = new Chart();
-    ui->chartView->setChart(s->chart);
+    chart = new Chart();
+    ui->chartView->setChart(chart->chart);
     myurl.setScheme("http");
     myurl.setHost("api.thingspeak.com");
     myurl.setPath("/channels/1057622/feeds.json");
     //qDebug() << myurl.toString();
-    QNetworkRequest request;
-    request.setUrl(myurl);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     restclient = new QNetworkAccessManager(this);
-    QNetworkReply *reply = restclient->get(request);
     connect(restclient, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply *)));
-    chart = new Chart();
-
-
+    connect(&thread, SIGNAL(tick()), this, SLOT(getThinkspeakData()));
+    thread.start(thread.HighestPriority);
 }
 
 MainWindow::~MainWindow()
 {
-    delete s;
+    thread.terminate();
     delete chart;
+    delete reply;
     delete restclient;
     delete ui;
 }
+void MainWindow::getThinkspeakData(){
+    QNetworkRequest request;
+    request.setUrl(myurl);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    reply = restclient->get(request);
+}
 
-void MainWindow::replyFinished(QNetworkReply *reply){
+
+void MainWindow::replyFinished(QNetworkReply * reply){
+    tempTime.clear();
+    temperatureData.clear();
+    temperatureTime.clear();
+    qDebug()<<temperatureData.size();
+    qDebug()<<tempTime.size();
     QJsonDocument jsdoc;
     jsdoc = QJsonDocument::fromJson(reply->readAll());
     QJsonObject jsobj = jsdoc.object();
@@ -90,7 +97,7 @@ void MainWindow::replyFinished(QNetworkReply *reply){
 
 void MainWindow::on_actionConnect_triggered() // kazAdy kolejny triggered do kolejnych przycisków tylko zmiana danych co nizej
 {
-    s->setData(tempTime,temperatureData,"Temperatura");
+    chart->setData(tempTime,temperatureData,"Temperatura");
     ui->chartView->repaint();
     this->setCentralWidget(ui->chartView);
 }

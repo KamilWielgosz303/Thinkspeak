@@ -112,15 +112,12 @@ void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
         QPointF p(i,data[data.size()-1-i]);
         dataPoints.append(p);
     }
-
-    //qDebug() << dataPoints;
     series.clear();
     series.append(dataPoints);
-
     chart->addSeries(&series);
     chart->legend()->hide();
-
     chart->setTitle(name);
+    chart->update();
     setLabelX();
 }
 
@@ -134,7 +131,7 @@ void Chart::setLabelX(){
     axisY->setMax(maxY);
     axisY->setMin(minY);
     chart->addAxis(axisY, Qt::AlignLeft);
-
+    delete axisY;
 }
 
 void Chart::findMinMax(){
