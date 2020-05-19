@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->chartView->setRenderHint(QPainter::Antialiasing);
     QUrl myurl;
+    this->setCentralWidget(ui->horizontalFrame);
     s = new Chart();
     ui->chartView->setChart(s->chart);
     myurl.setScheme("http");
@@ -90,7 +91,7 @@ void MainWindow::replyFinished(QNetworkReply *reply){
 
 void MainWindow::on_actionConnect_triggered() // kazAdy kolejny triggered do kolejnych przycisków tylko zmiana danych co nizej
 {
+
     s->setData(tempTime,temperatureData,"Temperatura");
     ui->chartView->repaint();
-    this->setCentralWidget(ui->chartView);
 }

@@ -105,6 +105,7 @@ void Chart::drawTemp(QVector<double> data,QVector<QString> time){ //niepotrzebna
 
 
 void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
+
     this->time = time;
     this->data = data;
     dataPoints.clear();
@@ -121,20 +122,40 @@ void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
     chart->legend()->hide();
 
     chart->setTitle(name);
-    setLabelX();
+    setAxisX();
+    setAxisY();
 }
 
 Chart::~Chart(){
     delete chart;
 }
 
-void Chart::setLabelX(){
-    QValueAxis *axisY = new QValueAxis();
+void Chart::setAxisY(){
+    axisY = new QValueAxis();
     findMinMax();
     axisY->setMax(maxY);
     axisY->setMin(minY);
     chart->addAxis(axisY, Qt::AlignLeft);
 
+}
+
+void Chart::setAxisX(){
+    axisX = new QDateTimeAxis();
+    QDateTime *test;
+    QVector<QDateTime> *tempTime = new QVector<QDateTime>;
+
+    qDebug()<<time;
+    for(int j=0;j<time.size();j++){
+        test = new QDateTime(QDateTime::fromString(time[time.size()-1-j],"hh:mm"));
+        *test = test->addSecs(7200);
+        tempTime->append(*test);
+    }
+    axisX->setMin(tempTime->at(0));
+    axisX->setMax(tempTime->at(99));
+
+    axisX->setFormat("hh:mm");
+
+    chart->addAxis(axisX,Qt::AlignBottom);
 }
 
 void Chart::findMinMax(){
