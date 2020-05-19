@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->chartView->setRenderHint(QPainter::Antialiasing);
     chart = new Chart();
     ui->chartView->setChart(chart->chart);
+    this->setCentralWidget(ui->horizontalFrame);
     myurl.setScheme("http");
     myurl.setHost("api.thingspeak.com");
     myurl.setPath("/channels/1057622/feeds.json");
@@ -99,5 +100,4 @@ void MainWindow::on_actionConnect_triggered() // kazAdy kolejny triggered do kol
 {
     chart->setData(tempTime,temperatureData,"Temperatura");
     ui->chartView->repaint();
-    this->setCentralWidget(ui->chartView);
 }

@@ -22,13 +22,15 @@ signals:
 
 private:
     QLineSeries series;
+    QDateTimeAxis *axisX;
+    QValueAxis *axisY;
     QVector<QString> time;
     QVector<double> data;
     QList<QPointF> dataPoints;
     double minY;
     double maxY;
-    void setLabelX();
-    void setLabelY();
+    void setAxisX();
+    void setAxisY();
     void findMinMax();
 };
 #endif // CHART_DRAW_H
