@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>29</x>
-      <y>40</y>
-      <width>511</width>
-      <height>291</height>
+      <y>20</y>
+      <width>641</width>
+      <height>341</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -29,19 +29,6 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>580</x>
-      <y>110</y>
-      <width>93</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>PushButton</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -49,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>695</width>
-     <height>23</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

@@ -25,6 +25,10 @@ private:
     QVector<QString> time;
     QVector<double> data;
     QList<QPointF> dataPoints;
+    double minY;
+    double maxY;
     void setLabelX();
+    void setLabelY();
+    void findMinMax();
 };
 #endif // CHART_DRAW_H
