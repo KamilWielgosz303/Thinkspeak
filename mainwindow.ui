@@ -304,11 +304,17 @@
    </property>
   </action>
   <action name="actionHumidity">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Humidity</string>
    </property>
   </action>
   <action name="actionPressure">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Pressure</string>
    </property>

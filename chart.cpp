@@ -5,8 +5,9 @@
 Chart::Chart()
 {
     chart = new QChart();
+    tempTime.append("Start");
 }
-void Chart::drawTemp(QVector<double> data,QVector<QString> time){ //niepotrzebna metoda na ten moment
+//void Chart::drawTemp(QVector<double> data,QVector<QString> time){ //niepotrzebna metoda na ten moment
 
 
     /*//![1]
@@ -91,7 +92,7 @@ void Chart::drawTemp(QVector<double> data,QVector<QString> time){ //niepotrzebna
     //![4]
 
     //![5]*/
-        qDebug("Wykonalem sie");
+     //   qDebug("Wykonalem sie");
         //emit sendSignal(chartView);                          //Tu jest pierwsza wersja wykresu i przesylamy go do mainwindow
 
 
@@ -101,7 +102,7 @@ void Chart::drawTemp(QVector<double> data,QVector<QString> time){ //niepotrzebna
 
 
 
-}
+//}
 
 
 void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
@@ -109,21 +110,27 @@ void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
     this->time = time;
     this->data = data;
     dataPoints.clear();
+    chart->removeSeries(&series);
     for(int i = 0; i<data.size();i++){
         QPointF p(i,data[data.size()-1-i]);
         dataPoints.append(p);
     }
+    qDebug()<<data;
+    qDebug()<<time;
+
     series.clear();
     series.append(dataPoints);
     chart->addSeries(&series);
+
+
     chart->legend()->hide();
     chart->setTitle(name);
     if(time != tempTime){
         chart->removeAxis(axisX);
-        chart->removeAxis(axisY);
         setAxisX();
-        setAxisY();
     }
+    chart->removeAxis(axisY);
+    setAxisY();
 
     chart->update();
     tempTime = time;
@@ -141,7 +148,6 @@ void Chart::setAxisY(){
     axisY->setMin(minY);
     axisY->setTickCount(11);
     chart->addAxis(axisY, Qt::AlignLeft);
-    delete axisY;
 
 }
 
@@ -157,7 +163,7 @@ void Chart::setAxisX(){
         //tempTime->append(*test);
         if(j == 0)
             axisX->setMin(*test);
-            actualTime = test->toString("yyyy-MM-ddThh:mm:ssZ");
+            //actualTime = test->toString("yyyy-MM-ddThh:mm:ssZ");
         if(j == 99)
             axisX->setMax(*test);
     }
@@ -167,7 +173,6 @@ void Chart::setAxisX(){
     axisX->setFormat("hh:mm");
     axisX->setTickCount(11);
     chart->addAxis(axisX,Qt::AlignBottom);
-    delete axisX;
 }
 
 void Chart::findMinMax(){

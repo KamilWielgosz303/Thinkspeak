@@ -65,6 +65,8 @@ void MainWindow::replyFinished(QNetworkReply * reply){
     //qDebug() << jsob["created_at"].toString();
     temperatureData.push_front(jsob["field1"].toString().toDouble());
     temperatureTime.push_front(jsob["created_at"].toString());
+    humidityData.push_front(jsob["field2"].toString().toDouble());
+    pressureData.push_front(jsob["field3"].toString().toDouble());
 
     }
 //    for(int i=0;i<temperatureTime.size();i++){
@@ -113,8 +115,15 @@ void MainWindow::replyFinished(QNetworkReply * reply){
 
 void MainWindow::updateChart(){
     if(ui->actionConnect->isChecked()){
+        if(ui->actionTemperature->isChecked()){
         chart->setData(temperatureTime,temperatureData,"Temperatura");
-
+        }
+        if(ui->actionHumidity->isChecked()){
+            chart->setData(temperatureTime,humidityData,"Humidity");
+        }
+        if(ui->actionPressure->isChecked()){
+            chart->setData(temperatureTime,pressureData,"Pressure");
+        }
         ui->chartView->repaint();
         ui->temp_label->setText(QString::number(temperatureData.at(0)));
         ui->time_label->setText(chart->getActualTime().mid(0,10)+ QString(" ") + chart->getActualTime().mid(11,8));
@@ -124,5 +133,33 @@ void MainWindow::updateChart(){
 
 void MainWindow::on_actionConnect_triggered()
 {
+    if(ui->actionConnect->isChecked()){
+        if(ui->actionTemperature->isChecked())
+            updateChart();
+        if(ui->actionHumidity->isChecked())
+            updateChart();
+        if(ui->actionPressure->isChecked())
+            updateChart();
+    }
+}
+
+void MainWindow::on_actionTemperature_triggered()
+{
+    ui->actionHumidity->setChecked(false);
+    ui->actionPressure->setChecked(false);
+    updateChart();
+}
+
+void MainWindow::on_actionHumidity_triggered()
+{
+    ui->actionTemperature->setChecked(false);
+    ui->actionPressure->setChecked(false);
+    updateChart();
+}
+
+void MainWindow::on_actionPressure_triggered()
+{
+    ui->actionTemperature->setChecked(false);
+    ui->actionHumidity->setChecked(false);
     updateChart();
 }

@@ -34,12 +34,20 @@ private slots:
 
     void on_actionConnect_triggered(bool checked);
 
+    void on_actionTemperature_triggered();
+
+    void on_actionHumidity_triggered();
+
+    void on_actionPressure_triggered();
+
 private:
     Ui::MainWindow *ui;
     Chart *chart;
     QJsonArray jsarr;
     QVector<double> temperatureData;
     QVector<QString> temperatureTime;
+    QVector<double> humidityData;
+    QVector<double> pressureData;
     Thread thread;
     QUrl myurl;
     QNetworkReply *reply;
