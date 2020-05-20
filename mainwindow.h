@@ -32,8 +32,6 @@ private slots:
     void getThinkspeakData();
     void updateChart();
 
-    void on_actionConnect_triggered(bool checked);
-
     void on_actionTemperature_triggered();
 
     void on_actionHumidity_triggered();

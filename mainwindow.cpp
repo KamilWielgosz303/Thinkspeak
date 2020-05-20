@@ -3,7 +3,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), temperatureData(100), temperatureTime(100)
+    , ui(new Ui::MainWindow), temperatureData(100), temperatureTime(100), humidityData(100), pressureData(100)
 {
     ui->setupUi(this);
     ui->chartView->setRenderHint(QPainter::Antialiasing);
@@ -11,10 +11,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->chartView->setChart(chart->chart);
     QUrl myurl;
     this->setCentralWidget(ui->horizontalFrame);
-    myurl.setScheme("https");
+    myurl.setScheme("http");
     myurl.setHost("api.thingspeak.com");
     myurl.setPath("/channels/1057622/feeds.json");
-    qDebug() << myurl.toString();
     restclient = new QNetworkAccessManager(this);
     connect(restclient, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply *)));
     connect(&thread, SIGNAL(tick()), this, SLOT(getThinkspeakData()));
@@ -34,50 +33,76 @@ MainWindow::~MainWindow()
     delete ui;
 }
 void MainWindow::getThinkspeakData(){
-    qDebug()<<"Pobieranie danych";
-//    QNetworkRequest request;
-//    request.setUrl(myurl);
-    //request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
       reply = restclient->get(request);
-
       updateChart();
-//    qDebug()<<"Pobrane dane";
 }
 
 
 void MainWindow::replyFinished(QNetworkReply * reply){
-
+    humidityData.clear();
+    pressureData.clear();
     temperatureData.clear();
     temperatureTime.clear();
-    //qDebug()<<temperatureData.size();
-    //qDebug()<<tempTime.size();
     QJsonDocument jsdoc;
     jsdoc = QJsonDocument::fromJson(reply->readAll());
     QJsonObject jsobj = jsdoc.object();
     jsarr = jsobj["feeds"].toArray();
     qDebug()<<jsarr.size();
     foreach (const QJsonValue &value, jsarr) {
-    QJsonObject jsob = value.toObject();
-    //qDebug() << jsob["entry_id"].toInt();
-    //qDebug() << jsob["field1"].toString();
-    //qDebug() << jsob["field2"].toString();
-    //qDebug() << jsob["field3"].toString();
-    //qDebug() << jsob["created_at"].toString();
-    temperatureData.push_front(jsob["field1"].toString().toDouble());
-    temperatureTime.push_front(jsob["created_at"].toString());
-    humidityData.push_front(jsob["field2"].toString().toDouble());
-    pressureData.push_front(jsob["field3"].toString().toDouble());
+        QJsonObject jsob = value.toObject();
+        temperatureData.push_front(jsob["field1"].toString().toDouble());
+        temperatureTime.push_front(jsob["created_at"].toString());
+        humidityData.push_front(jsob["field2"].toString().toDouble());
+        pressureData.push_front(jsob["field3"].toString().toDouble());
 
     }
-//    for(int i=0;i<temperatureTime.size();i++){
-//        tempTime.append(temperatureTime.at(i).mid(11,5));   // Wyłuskanie godzin
-//    }
-
     qDebug()<<temperatureData.size();
-    //qDebug()<<tempTime;
-    //repaint();
     reply->deleteLater();
 
+}
+
+void MainWindow::updateChart(){
+    if(ui->actionConnect->isChecked()){
+        if(ui->actionTemperature->isChecked()){
+        chart->setData(temperatureTime,temperatureData,"Temperatura");
+        }
+        if(ui->actionHumidity->isChecked()){
+            chart->setData(temperatureTime,humidityData,"Humidity");
+        }
+        if(ui->actionPressure->isChecked()){
+            chart->setData(temperatureTime,pressureData,"Pressure");
+        }
+        ui->chartView->repaint();
+        ui->temp_label->setText(QString::number(temperatureData.at(0)));
+        ui->time_label->setText(chart->getActualTime().mid(0,10)+ QString(" ") + chart->getActualTime().mid(11,8));
+    }
+
+}
+
+void MainWindow::on_actionConnect_triggered()
+{
+    updateChart();
+}
+
+void MainWindow::on_actionTemperature_triggered()
+{
+    ui->actionHumidity->setChecked(false);
+    ui->actionPressure->setChecked(false);
+    updateChart();
+}
+
+void MainWindow::on_actionHumidity_triggered()
+{
+    ui->actionTemperature->setChecked(false);
+    ui->actionPressure->setChecked(false);
+    updateChart();
+}
+
+void MainWindow::on_actionPressure_triggered()
+{
+    ui->actionTemperature->setChecked(false);
+    ui->actionHumidity->setChecked(false);
+    updateChart();
 }
 
 //void MainWindow::getChart(QChartView *s1){            //nieuzywane do wywalenia
@@ -110,56 +135,3 @@ void MainWindow::replyFinished(QNetworkReply * reply){
 //{
 
 //}
-
-
-
-void MainWindow::updateChart(){
-    if(ui->actionConnect->isChecked()){
-        if(ui->actionTemperature->isChecked()){
-        chart->setData(temperatureTime,temperatureData,"Temperatura");
-        }
-        if(ui->actionHumidity->isChecked()){
-            chart->setData(temperatureTime,humidityData,"Humidity");
-        }
-        if(ui->actionPressure->isChecked()){
-            chart->setData(temperatureTime,pressureData,"Pressure");
-        }
-        ui->chartView->repaint();
-        ui->temp_label->setText(QString::number(temperatureData.at(0)));
-        ui->time_label->setText(chart->getActualTime().mid(0,10)+ QString(" ") + chart->getActualTime().mid(11,8));
-    }
-
-}
-
-void MainWindow::on_actionConnect_triggered()
-{
-    if(ui->actionConnect->isChecked()){
-        if(ui->actionTemperature->isChecked())
-            updateChart();
-        if(ui->actionHumidity->isChecked())
-            updateChart();
-        if(ui->actionPressure->isChecked())
-            updateChart();
-    }
-}
-
-void MainWindow::on_actionTemperature_triggered()
-{
-    ui->actionHumidity->setChecked(false);
-    ui->actionPressure->setChecked(false);
-    updateChart();
-}
-
-void MainWindow::on_actionHumidity_triggered()
-{
-    ui->actionTemperature->setChecked(false);
-    ui->actionPressure->setChecked(false);
-    updateChart();
-}
-
-void MainWindow::on_actionPressure_triggered()
-{
-    ui->actionTemperature->setChecked(false);
-    ui->actionHumidity->setChecked(false);
-    updateChart();
-}

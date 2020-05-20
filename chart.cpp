@@ -6,7 +6,98 @@ Chart::Chart()
 {
     chart = new QChart();
     tempTime.append("Start");
+    axisY = new QValueAxis();
+    axisY->setLabelFormat("%.1f");
+    axisY->setTickCount(11);
+
+    axisX = new QDateTimeAxis();
+    axisX->setFormat("hh:mm");
+    axisX->setTickCount(11);
 }
+
+
+Chart::~Chart(){
+    delete axisY;
+    delete axisX;
+    delete chart;
+}
+
+void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
+
+    this->time = time;
+    this->data = data;
+    dataPoints.clear();
+    chart->removeSeries(&series);
+    for(int i = 0; i<data.size();i++){
+        QPointF p(i,data[data.size()-1-i]);
+        dataPoints.append(p);
+    }
+    //qDebug()<<data;
+    //qDebug()<<time;
+
+    series.clear();
+    series.append(dataPoints);
+    chart->addSeries(&series);
+
+
+    chart->legend()->hide();
+    chart->setTitle(name);
+    if(time != tempTime){
+        chart->removeAxis(axisX);
+        setAxisX();
+    }
+    chart->removeAxis(axisY);
+    setAxisY();
+
+    chart->update();
+    tempTime = time;
+}
+
+
+void Chart::setAxisY(){
+    findMinMax();
+    axisY->setMax(maxY);
+    axisY->setMin(minY);
+    chart->addAxis(axisY, Qt::AlignLeft);
+
+}
+
+void Chart::setAxisX(){
+    //QVector<QDateTime> *tempTime = new QVector<QDateTime>;
+    //qDebug()<<time;
+    for(int j=0;j<time.size();j++){
+        QDateTime test(QDateTime::fromString(time[time.size()-1-j],"yyyy-MM-ddThh:mm:ssZ"));
+        test = test.addSecs(7200);
+        //qDebug()<<test.time();
+        //tempTime->append(*test);
+        if(j == 0)
+            axisX->setMin(test);
+            //actualTime = test->toString("yyyy-MM-ddThh:mm:ssZ");
+        if(j == 99)
+            axisX->setMax(test);
+    }
+
+//    axisX->setMin(tempTime->at(0));
+//    axisX->setMax(tempTime->at(99));
+    chart->addAxis(axisX,Qt::AlignBottom);
+}
+
+void Chart::findMinMax(){
+    maxY = data[0];
+    minY = data[0];
+    for(int i=1;i<data.size();i++){
+        if(data[i] > maxY)
+            maxY = data[i];
+        if(data[i] < minY)
+            minY = data[i];
+    }
+
+}
+
+QString Chart::getActualTime(){
+    return actualTime;
+}
+
 //void Chart::drawTemp(QVector<double> data,QVector<QString> time){ //niepotrzebna metoda na ten moment
 
 
@@ -104,89 +195,3 @@ Chart::Chart()
 
 //}
 
-
-void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
-
-    this->time = time;
-    this->data = data;
-    dataPoints.clear();
-    chart->removeSeries(&series);
-    for(int i = 0; i<data.size();i++){
-        QPointF p(i,data[data.size()-1-i]);
-        dataPoints.append(p);
-    }
-    qDebug()<<data;
-    qDebug()<<time;
-
-    series.clear();
-    series.append(dataPoints);
-    chart->addSeries(&series);
-
-
-    chart->legend()->hide();
-    chart->setTitle(name);
-    if(time != tempTime){
-        chart->removeAxis(axisX);
-        setAxisX();
-    }
-    chart->removeAxis(axisY);
-    setAxisY();
-
-    chart->update();
-    tempTime = time;
-}
-
-Chart::~Chart(){
-    delete chart;
-}
-
-void Chart::setAxisY(){
-    axisY = new QValueAxis();
-    axisY->setLabelFormat("%.1f");
-    findMinMax();
-    axisY->setMax(maxY);
-    axisY->setMin(minY);
-    axisY->setTickCount(11);
-    chart->addAxis(axisY, Qt::AlignLeft);
-
-}
-
-void Chart::setAxisX(){
-    axisX = new QDateTimeAxis();
-    QDateTime *test;
-    //QVector<QDateTime> *tempTime = new QVector<QDateTime>;
-    qDebug()<<time;
-    for(int j=0;j<time.size();j++){
-        test = new QDateTime(QDateTime::fromString(time[time.size()-1-j],"yyyy-MM-ddThh:mm:ssZ"));
-        *test = test->addSecs(7200);
-        qDebug()<<test->time();
-        //tempTime->append(*test);
-        if(j == 0)
-            axisX->setMin(*test);
-            //actualTime = test->toString("yyyy-MM-ddThh:mm:ssZ");
-        if(j == 99)
-            axisX->setMax(*test);
-    }
-
-//    axisX->setMin(tempTime->at(0));
-//    axisX->setMax(tempTime->at(99));
-    axisX->setFormat("hh:mm");
-    axisX->setTickCount(11);
-    chart->addAxis(axisX,Qt::AlignBottom);
-}
-
-void Chart::findMinMax(){
-    maxY = data[0];
-    minY = data[0];
-    for(int i=0;i<data.size()-1;i++){
-        if(data[i+1] > maxY)
-            maxY = data[i+1];
-        if(data[i+1] < minY)
-            minY = data[i+1];
-    }
-
-}
-
-QString Chart::getActualTime(){
-    return actualTime;
-}
