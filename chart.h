@@ -16,6 +16,7 @@ public:
     void drawTemp(QVector<double> data,QVector<QString> time);
     void setData(QVector<QString>, QVector<double>, QString);
     QChart *chart;
+    QString getActualTime();
 
 signals:
     void sendSignal(QChartView *s1);
@@ -25,7 +26,9 @@ private:
     QDateTimeAxis *axisX;
     QValueAxis *axisY;
     QVector<QString> time;
+    QString actualTime;
     QVector<double> data;
+    QVector<QString> tempTime;
     QList<QPointF> dataPoints;
     double minY;
     double maxY;

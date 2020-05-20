@@ -30,6 +30,9 @@ private slots:
     void on_actionConnect_triggered();
     void replyFinished(QNetworkReply * reply);
     void getThinkspeakData();
+    void updateChart();
+
+    void on_actionConnect_triggered(bool checked);
 
 private:
     Ui::MainWindow *ui;
@@ -37,9 +40,9 @@ private:
     QJsonArray jsarr;
     QVector<double> temperatureData;
     QVector<QString> temperatureTime;
-    QVector<QString> tempTime;
     Thread thread;
     QUrl myurl;
     QNetworkReply *reply;
+    QNetworkRequest request;
 };
 #endif // MAINWINDOW_H

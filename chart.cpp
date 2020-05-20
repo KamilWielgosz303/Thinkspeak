@@ -118,9 +118,13 @@ void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
     chart->addSeries(&series);
     chart->legend()->hide();
     chart->setTitle(name);
-    setAxisX();
+    if(time != tempTime){
+        setAxisX();
+        setAxisY();
+    }
+
     chart->update();
-    setAxisY();
+    tempTime = time;
 }
 
 Chart::~Chart(){
@@ -129,29 +133,36 @@ Chart::~Chart(){
 
 void Chart::setAxisY(){
     axisY = new QValueAxis();
+    axisY->setLabelFormat("%.1f");
     findMinMax();
     axisY->setMax(maxY);
     axisY->setMin(minY);
+    axisY->setTickCount(11);
     chart->addAxis(axisY, Qt::AlignLeft);
-    delete axisY;
+
 }
 
 void Chart::setAxisX(){
     axisX = new QDateTimeAxis();
     QDateTime *test;
-    QVector<QDateTime> *tempTime = new QVector<QDateTime>;
-
+    //QVector<QDateTime> *tempTime = new QVector<QDateTime>;
     qDebug()<<time;
     for(int j=0;j<time.size();j++){
-        test = new QDateTime(QDateTime::fromString(time[time.size()-1-j],"hh:mm"));
+        test = new QDateTime(QDateTime::fromString(time[time.size()-1-j],"yyyy-MM-ddThh:mm:ssZ"));
         *test = test->addSecs(7200);
-        tempTime->append(*test);
+        qDebug()<<test->time();
+        //tempTime->append(*test);
+        if(j == 0)
+            axisX->setMin(*test);
+            actualTime = test->toString("yyyy-MM-ddThh:mm:ssZ");
+        if(j == 99)
+            axisX->setMax(*test);
     }
-    axisX->setMin(tempTime->at(0));
-    axisX->setMax(tempTime->at(99));
 
+//    axisX->setMin(tempTime->at(0));
+//    axisX->setMax(tempTime->at(99));
     axisX->setFormat("hh:mm");
-
+    axisX->setTickCount(11);
     chart->addAxis(axisX,Qt::AlignBottom);
 }
 
@@ -165,4 +176,8 @@ void Chart::findMinMax(){
             minY = data[i+1];
     }
 
+}
+
+QString Chart::getActualTime(){
+    return actualTime;
 }
