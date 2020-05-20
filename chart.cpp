@@ -119,6 +119,8 @@ void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
     chart->legend()->hide();
     chart->setTitle(name);
     if(time != tempTime){
+        chart->removeAxis(axisX);
+        chart->removeAxis(axisY);
         setAxisX();
         setAxisY();
     }
@@ -139,6 +141,7 @@ void Chart::setAxisY(){
     axisY->setMin(minY);
     axisY->setTickCount(11);
     chart->addAxis(axisY, Qt::AlignLeft);
+    delete axisY;
 
 }
 
@@ -164,6 +167,7 @@ void Chart::setAxisX(){
     axisX->setFormat("hh:mm");
     axisX->setTickCount(11);
     chart->addAxis(axisX,Qt::AlignBottom);
+    delete axisX;
 }
 
 void Chart::findMinMax(){
