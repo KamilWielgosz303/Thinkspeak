@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->chartView->setRenderHint(QPainter::Antialiasing);
     chart = new Chart();
     ui->chartView->setChart(chart->chart);
+
     QUrl myurl;
     this->setCentralWidget(ui->horizontalFrame);
     myurl.setScheme("http");
@@ -73,8 +74,10 @@ void MainWindow::updateChart(){
             chart->setData(temperatureTime,pressureData,"Pressure");
         }
         ui->chartView->repaint();
-        ui->temp_label->setText(QString::number(temperatureData.at(0)));
+        ui->temp_label->setText(QString::number(temperatureData.at(0))+ " °C");
         ui->time_label->setText(chart->getActualTime().mid(0,10)+ QString(" ") + chart->getActualTime().mid(11,8));
+        ui->hum_label->setText(QString::number(humidityData.at(0)) + "%");
+        ui->pres_label->setText(QString::number(pressureData.at(0))+" kPa");
     }
 
 }
@@ -82,6 +85,13 @@ void MainWindow::updateChart(){
 void MainWindow::on_actionConnect_triggered()
 {
     updateChart();
+    if(ui->actionConnect->isChecked()){
+        ui->actionconnectIcon->setIcon(QIcon(":/new/icons/icons/greenicon.png"));
+        ui->actionconnectIcon->setIconVisibleInMenu(false);
+    }
+    else
+        ui->actionconnectIcon->setIcon(QIcon(":/new/icons/icons/redicon.png"));
+
 }
 
 void MainWindow::on_actionTemperature_triggered()

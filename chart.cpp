@@ -72,7 +72,7 @@ void Chart::setAxisX(){
         //tempTime->append(*test);
         if(j == 0)
             axisX->setMin(test);
-            //actualTime = test->toString("yyyy-MM-ddThh:mm:ssZ");
+            actualTime = test.toString("yyyy-MM-ddThh:mm:ssZ");
         if(j == 99)
             axisX->setMax(test);
     }

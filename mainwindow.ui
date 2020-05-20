@@ -119,7 +119,7 @@
           </font>
          </property>
          <property name="text">
-          <string>TextLabel</string>
+          <string>empty</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -154,7 +154,7 @@
           </font>
          </property>
          <property name="text">
-          <string>TextLabel</string>
+          <string>empty</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -189,7 +189,7 @@
           </font>
          </property>
          <property name="text">
-          <string>TextLabel</string>
+          <string>empty</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -224,7 +224,7 @@
           </font>
          </property>
          <property name="text">
-          <string>TextLabel</string>
+          <string>empty</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -262,6 +262,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionConnect"/>
+   <addaction name="actionconnectIcon"/>
    <addaction name="separator"/>
    <addaction name="separator"/>
    <addaction name="actionTemperature"/>
@@ -319,6 +320,27 @@
     <string>Pressure</string>
    </property>
   </action>
+  <action name="actionconnectIcon">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/new/icons/icons/redicon.png</normaloff>
+     <normalon>:/new/icons/icons/redicon.png</normalon>
+     <disabledoff>:/new/icons/icons/redicon.png</disabledoff>
+     <disabledon>:/new/icons/icons/redicon.png</disabledon>:/new/icons/icons/redicon.png</iconset>
+   </property>
+   <property name="text">
+    <string>connectIcon</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -328,6 +350,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>
