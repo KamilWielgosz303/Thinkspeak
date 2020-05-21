@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow), temperatureData(100), temperatureTime(100), humidityData(100), pressureData(100)
@@ -65,13 +67,13 @@ void MainWindow::replyFinished(QNetworkReply * reply){
 void MainWindow::updateChart(){
     if(ui->actionConnect->isChecked()){
         if(ui->actionTemperature->isChecked()){
-        chart->setData(temperatureTime,temperatureData,"Temperature");
+        chart->setData(temperatureTime,temperatureData,"Temperature [°C]");
         }
         if(ui->actionHumidity->isChecked()){
-            chart->setData(temperatureTime,humidityData,"Humidity");
+            chart->setData(temperatureTime,humidityData,"Humidity [%]");
         }
         if(ui->actionPressure->isChecked()){
-            chart->setData(temperatureTime,pressureData,"Pressure");
+            chart->setData(temperatureTime,pressureData,"Pressure [kPa]");
         }
         ui->chartView->repaint();
         ui->temp_label->setText(QString::number(temperatureData.at(0))+ " °C");

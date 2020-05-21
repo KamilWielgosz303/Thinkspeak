@@ -37,6 +37,5 @@ private:
     double maxY;
     void setAxisX();
     void setAxisY();
-    void findMinMax();
 };
 #endif // CHART_DRAW_H

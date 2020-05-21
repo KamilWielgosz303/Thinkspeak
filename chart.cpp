@@ -1,6 +1,6 @@
 #include "chart.h"
 
-
+using namespace std;
 
 Chart::Chart()
 {
@@ -69,20 +69,10 @@ void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
         QPointF p(i,data[data.size()-1-i]);
         dataPoints.append(p);
     }
-
     series.clear();
     series.append(dataPoints);
     chart->addSeries(&series);
-
-    if(QString::compare(name,"Temperature") == 0)
-        axisY->setTitleText("Temperature [°C]");
-    else if(QString::compare(name,"Humidity") == 0)
-        axisY->setTitleText("Humidity [%]");
-    else
-        axisY->setTitleText("Pressure [kPa]");
-
-
-
+        axisY->setTitleText(name);
     chart->legend()->hide();
     chart->setTitle(name);
     if(time != tempTime){
@@ -98,11 +88,10 @@ void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
 
 
 void Chart::setAxisY(){
-    findMinMax();
-    axisY->setMax(maxY);
-    axisY->setMin(minY);
+    pair<double*, double*> minmax = minmax_element(begin(data),end(data));
+    axisY->setMax(*minmax.first);
+    axisY->setMin(*minmax.second);
     chart->addAxis(axisY, Qt::AlignLeft);
-
 }
 
 void Chart::setAxisX(){
@@ -116,18 +105,6 @@ void Chart::setAxisX(){
             axisX->setMax(test);
     }
     chart->addAxis(axisX,Qt::AlignBottom);
-}
-
-void Chart::findMinMax(){
-    maxY = data[0];
-    minY = data[0];
-    for(int i=1;i<data.size();i++){
-        if(data[i] > maxY)
-            maxY = data[i];
-        if(data[i] < minY)
-            minY = data[i];
-    }
-
 }
 
 QString Chart::getActualTime(){
