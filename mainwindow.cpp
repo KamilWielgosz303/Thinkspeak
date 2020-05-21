@@ -65,7 +65,7 @@ void MainWindow::replyFinished(QNetworkReply * reply){
 void MainWindow::updateChart(){
     if(ui->actionConnect->isChecked()){
         if(ui->actionTemperature->isChecked()){
-        chart->setData(temperatureTime,temperatureData,"Temperatura");
+        chart->setData(temperatureTime,temperatureData,"Temperature");
         }
         if(ui->actionHumidity->isChecked()){
             chart->setData(temperatureTime,humidityData,"Humidity");

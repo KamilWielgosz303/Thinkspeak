@@ -30,6 +30,9 @@ private:
     QVector<double> data;
     QVector<QString> tempTime;
     QList<QPointF> dataPoints;
+    QPen pen;
+    QFont font;
+    QLinearGradient plotAreaGradient;
     double minY;
     double maxY;
     void setAxisX();

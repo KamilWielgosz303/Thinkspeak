@@ -4,6 +4,9 @@
 
 Chart::Chart()
 {
+    QPen pen(QRgb(0xfdb157));
+    pen.setWidth(5);
+    series.setPen(pen);
     chart = new QChart();
     tempTime.append("Start");
     axisY = new QValueAxis();
@@ -13,6 +16,40 @@ Chart::Chart()
     axisX = new QDateTimeAxis();
     axisX->setFormat("hh:mm");
     axisX->setTickCount(11);
+
+    axisX->setTitleText("Time");
+    axisX->setTitleBrush(QBrush(Qt::white));
+    axisY->setTitleBrush(QBrush(Qt::white));
+
+    plotAreaGradient.setStart(QPointF(0, 1));
+    plotAreaGradient.setFinalStop(QPointF(1, 0));
+    plotAreaGradient.setColorAt(0.0, QRgb(0xe21e13));
+    plotAreaGradient.setColorAt(1.0, QRgb(0x000000));
+    plotAreaGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
+    chart->setPlotAreaBackgroundBrush(plotAreaGradient);
+    chart->setBackgroundBrush(plotAreaGradient);
+    chart->setPlotAreaBackgroundVisible(true);
+
+    font.setPixelSize(12);
+    axisX->setLabelsFont(font);
+    axisY->setLabelsFont(font);
+
+    pen.setColor(QRgb(0xffffff));
+    pen.setWidth(3);
+    axisX->setLinePen(pen);
+    axisY->setLinePen(pen);
+
+    QBrush axisBrush(Qt::white);
+    axisX->setLabelsBrush(axisBrush);
+    axisY->setLabelsBrush(axisBrush);
+
+    font.setPixelSize(15);
+    axisX->setLabelsFont(font);
+    axisY->setLabelsFont(font);
+
+    font.setPixelSize(18);
+    chart->setTitleFont(font);
+    chart->setTitleBrush(QBrush(Qt::white));
 }
 
 
@@ -38,6 +75,14 @@ void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
     series.clear();
     series.append(dataPoints);
     chart->addSeries(&series);
+
+    if(QString::compare(name,"Temperature") == 0)
+        axisY->setTitleText("Temperature [°C]");
+    else if(QString::compare(name,"Humidity") == 0)
+        axisY->setTitleText("Humidity [%]");
+    else
+        axisY->setTitleText("Pressure [kPa]");
+
 
 
     chart->legend()->hide();
