@@ -23,8 +23,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     request.setUrl(myurl);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    thread.start(thread.HighestPriority);
 }
 
 MainWindow::~MainWindow()
@@ -50,7 +48,6 @@ void MainWindow::replyFinished(QNetworkReply * reply){
     jsdoc = QJsonDocument::fromJson(reply->readAll());
     QJsonObject jsobj = jsdoc.object();
     jsarr = jsobj["feeds"].toArray();
-    qDebug()<<jsarr.size();
     foreach (const QJsonValue &value, jsarr) {
         QJsonObject jsob = value.toObject();
         temperatureData.push_front(jsob["field1"].toString().toDouble());
@@ -61,7 +58,6 @@ void MainWindow::replyFinished(QNetworkReply * reply){
     }
     qDebug()<<temperatureData.size();
     reply->deleteLater();
-
 }
 
 void MainWindow::updateChart(){
@@ -86,14 +82,17 @@ void MainWindow::updateChart(){
 
 void MainWindow::on_actionConnect_triggered()
 {
-    updateChart();
     if(ui->actionConnect->isChecked()){
         ui->actionconnectIcon->setIcon(QIcon(":/new/icons/icons/greenicon.png"));
         ui->actionconnectIcon->setIconVisibleInMenu(false);
+        thread.start(thread.HighestPriority);
     }
-    else
+    else{
         ui->actionconnectIcon->setIcon(QIcon(":/new/icons/icons/redicon.png"));
-
+        if (thread.isRunning()){
+            thread.terminate();
+        }
+    }
 }
 
 void MainWindow::on_actionTemperature_triggered()
