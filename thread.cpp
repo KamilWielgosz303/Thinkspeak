@@ -10,6 +10,6 @@ void Thread::run()
     while(this->isRunning()){
 
         emit this->tick();
-        this->msleep(60000);
+        this->msleep(TIME);
     }
 }

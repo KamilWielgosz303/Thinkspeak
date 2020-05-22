@@ -18,15 +18,11 @@ MainWindow::MainWindow(QWidget *parent)
     windowGradient.setColorAt(1.0, QRgb(0x000000));
     windowGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
 
-
-
-
     QUrl myurl;
     this->setCentralWidget(ui->horizontalFrame);
-    myurl.setScheme("http");
-
-    myurl.setHost("api.thingspeak.com");
-    myurl.setPath("/channels/1057622/feeds.json");
+    myurl.setScheme(SCHEME);
+    myurl.setHost(HOST);
+    myurl.setPath(CHANNEL);
     restclient = new QNetworkAccessManager(this);
     connect(restclient, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply *)));
     connect(&thread, SIGNAL(tick()), this, SLOT(getThinkspeakData()));
@@ -56,6 +52,7 @@ void MainWindow::replyFinished(QNetworkReply * reply){
     temperatureData.clear();
     temperatureTime.clear();
     QJsonDocument jsdoc;
+    QJsonArray jsarr;
     jsdoc = QJsonDocument::fromJson(reply->readAll());
     QJsonObject jsobj = jsdoc.object();
     jsarr = jsobj["feeds"].toArray();
@@ -65,9 +62,8 @@ void MainWindow::replyFinished(QNetworkReply * reply){
         temperatureTime.push_front(jsob["created_at"].toString());
         humidityData.push_front(jsob["field2"].toString().toDouble());
         pressureData.push_front(jsob["field3"].toString().toDouble());
-
     }
-    qDebug()<<temperatureData.size();
+    qDebug()<<temperatureTime.size();
     reply->deleteLater();
     updateChart();
 }
@@ -75,13 +71,13 @@ void MainWindow::replyFinished(QNetworkReply * reply){
 void MainWindow::updateChart(){
     if(ui->actionConnect->isChecked()){
         if(ui->actionTemperature->isChecked()){
-        chart->setData(temperatureTime,temperatureData,"Temperature [°C]");
+        chart->setData(temperatureTime,temperatureData,TEMPERATURE);
         }
         if(ui->actionHumidity->isChecked()){
-            chart->setData(temperatureTime,humidityData,"Humidity [%]");
+            chart->setData(temperatureTime,humidityData,HUMIDITY);
         }
         if(ui->actionPressure->isChecked()){
-            chart->setData(temperatureTime,pressureData,"Pressure [kPa]");
+            chart->setData(temperatureTime,pressureData,PRESSURE);
         }
         ui->chartView->repaint();
         ui->temp_label->setText(QString::number(temperatureData.at(0))+ " °C");

@@ -89,10 +89,8 @@ void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
 
 void Chart::setAxisY(){
     auto minmax = minmax_element(begin(data),end(data));
-    qDebug() << minmax;
     axisY->setMin(*minmax.first);
     axisY->setMax(*minmax.second);
-    qDebug() << axisY->max() << axisY->min();
     chart->addAxis(axisY, Qt::AlignLeft);
 }
 

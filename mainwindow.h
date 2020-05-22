@@ -10,6 +10,7 @@
 #include <QNetworkReply>
 #include <QPainter>
 #include <QObject>
+#include "_def.h"
 #include "chart.h"
 #include "thread.h"
 
@@ -32,23 +33,18 @@ private slots:
     void replyFinished(QNetworkReply * reply);
     void getThinkspeakData();
     void updateChart();
-
     void on_actionTemperature_triggered();
-
     void on_actionHumidity_triggered();
-
     void on_actionPressure_triggered();
 
 private:
     Ui::MainWindow *ui;
     Chart *chart;
-    QJsonArray jsarr;
     QVector<double> temperatureData;
     QVector<QString> temperatureTime;
     QVector<double> humidityData;
     QVector<double> pressureData;
     Thread thread;
-    QUrl myurl;
     QNetworkReply *reply;
     QNetworkRequest request;
 };

@@ -23,6 +23,7 @@ SOURCES += \
     thread.cpp
 
 HEADERS += \
+    _def.h \
     chart.h \
     mainwindow.h \
     thread.h
