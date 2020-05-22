@@ -11,10 +11,20 @@ MainWindow::MainWindow(QWidget *parent)
     ui->chartView->setRenderHint(QPainter::Antialiasing);
     chart = new Chart();
     ui->chartView->setChart(chart->chart);
+    QLinearGradient windowGradient;
+    windowGradient.setStart(QPointF(0, 1));
+    windowGradient.setFinalStop(QPointF(1, 0));
+    windowGradient.setColorAt(0.0, QRgb(0xe21e13));
+    windowGradient.setColorAt(1.0, QRgb(0x000000));
+    windowGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
+
+
+
 
     QUrl myurl;
     this->setCentralWidget(ui->horizontalFrame);
     myurl.setScheme("http");
+
     myurl.setHost("api.thingspeak.com");
     myurl.setPath("/channels/1057622/feeds.json");
     restclient = new QNetworkAccessManager(this);
@@ -23,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     request.setUrl(myurl);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
 }
 
 MainWindow::~MainWindow()
@@ -35,7 +46,7 @@ MainWindow::~MainWindow()
 }
 void MainWindow::getThinkspeakData(){
       reply = restclient->get(request);
-      updateChart();
+
 }
 
 
@@ -58,6 +69,7 @@ void MainWindow::replyFinished(QNetworkReply * reply){
     }
     qDebug()<<temperatureData.size();
     reply->deleteLater();
+    updateChart();
 }
 
 void MainWindow::updateChart(){

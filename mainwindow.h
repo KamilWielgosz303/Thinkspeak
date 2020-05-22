@@ -25,6 +25,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     QNetworkAccessManager *restclient;
+    QLinearGradient windowGradient;
 
 private slots:
     void on_actionConnect_triggered();

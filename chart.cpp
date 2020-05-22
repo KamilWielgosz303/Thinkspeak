@@ -89,8 +89,10 @@ void Chart::setData(QVector<QString> time, QVector<double> data, QString name){
 
 void Chart::setAxisY(){
     auto minmax = minmax_element(begin(data),end(data));
+    qDebug() << minmax;
     axisY->setMin(*minmax.first);
     axisY->setMax(*minmax.second);
+    qDebug() << axisY->max() << axisY->min();
     chart->addAxis(axisY, Qt::AlignLeft);
 }
 
@@ -98,9 +100,9 @@ void Chart::setAxisX(){
     QDateTime test(QDateTime::fromString(time[time.size()-1],"yyyy-MM-ddThh:mm:ssZ"));
     test = test.addSecs(7200);
     axisX->setMin(test);
-    actualTime = test.toString("yyyy-MM-ddThh:mm:ssZ");
     test = QDateTime::fromString(time[0],"yyyy-MM-ddThh:mm:ssZ");
     test = test.addSecs(7200);
+    actualTime = test.toString("yyyy-MM-ddThh:mm:ssZ");
     axisX->setMax(test);
     chart->addAxis(axisX,Qt::AlignBottom);
 }
