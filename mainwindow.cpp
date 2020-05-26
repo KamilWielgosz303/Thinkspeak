@@ -52,25 +52,31 @@ void MainWindow::getThinkspeakData(){
 
 
 void MainWindow::replyFinished(QNetworkReply * reply){
-    humidityData.clear();
-    pressureData.clear();
-    temperatureData.clear();
-    temperatureTime.clear();
-    QJsonDocument jsdoc;
-    QJsonArray jsarr;
-    jsdoc = QJsonDocument::fromJson(reply->readAll());
-    QJsonObject jsobj = jsdoc.object();
-    jsarr = jsobj["feeds"].toArray();
-    foreach (const QJsonValue &value, jsarr) {
-        QJsonObject jsob = value.toObject();
-        temperatureData.push_front(jsob["field1"].toString().toDouble());
-        temperatureTime.push_front(jsob["created_at"].toString());
-        humidityData.push_front(jsob["field2"].toString().toDouble());
-        pressureData.push_front(jsob["field3"].toString().toDouble());
+    if(!reply->error()){
+        ui->actionconnectIcon->setIcon(QIcon(":/new/icons/icons/greenicon.png"));
+        ui->actionconnectIcon->setIconVisibleInMenu(false);
+        humidityData.clear();
+        pressureData.clear();
+        temperatureData.clear();
+        temperatureTime.clear();
+        QJsonDocument jsdoc;
+        QJsonArray jsarr;
+        jsdoc = QJsonDocument::fromJson(reply->readAll());
+        QJsonObject jsobj = jsdoc.object();
+        jsarr = jsobj["feeds"].toArray();
+        foreach (const QJsonValue &value, jsarr) {
+            QJsonObject jsob = value.toObject();
+            temperatureData.push_front(jsob["field1"].toString().toDouble());
+            temperatureTime.push_front(jsob["created_at"].toString());
+            humidityData.push_front(jsob["field2"].toString().toDouble());
+            pressureData.push_front(jsob["field3"].toString().toDouble());
+        }
+        qDebug()<<temperatureTime.size();
+        reply->deleteLater();
+        updateChart();
+    }else{
+        QMessageBox::warning(this,"Błąd","Problem z połączeniem: " + reply->errorString());
     }
-    qDebug()<<temperatureTime.size();
-    reply->deleteLater();
-    updateChart();
 }
 
 void MainWindow::updateChart(){
@@ -96,8 +102,6 @@ void MainWindow::updateChart(){
 void MainWindow::on_actionConnect_triggered()
 {
     if(ui->actionConnect->isChecked()){
-        ui->actionconnectIcon->setIcon(QIcon(":/new/icons/icons/greenicon.png"));
-        ui->actionconnectIcon->setIconVisibleInMenu(false);
         thread.start(thread.HighestPriority);
     }
     else{

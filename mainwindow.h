@@ -10,6 +10,7 @@
 #include <QNetworkReply>
 #include <QPainter>
 #include <QObject>
+#include <QMessageBox>
 #include "_def.h"
 #include "chart.h"
 #include "thread.h"
