@@ -94,7 +94,7 @@ void MainWindow::updateChart(){
         ui->temp_label->setText(QString::number(temperatureData.at(0))+ " °C");
         ui->time_label->setText(chart->getActualTime().mid(0,10)+ QString(" ") + chart->getActualTime().mid(11,8));
         ui->hum_label->setText(QString::number(humidityData.at(0)) + "%");
-        ui->pres_label->setText(QString::number(pressureData.at(0))+" kPa");
+        ui->pres_label->setText(QString::number(pressureData.at(0))+" hPa");
     }
 
 }
