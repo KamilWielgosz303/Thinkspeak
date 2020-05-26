@@ -60,6 +60,9 @@
            <underline>true</underline>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">color:rgb(255, 255, 255)</string>
+         </property>
          <property name="text">
           <string>Place</string>
          </property>
@@ -86,6 +89,9 @@
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
          </property>
+         <property name="styleSheet">
+          <string notr="true">color:rgb(255, 255, 255)</string>
+         </property>
          <property name="text">
           <string>Godów woj. Śląskie</string>
          </property>
@@ -103,6 +109,9 @@
            <bold>false</bold>
            <underline>true</underline>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color:rgb(255, 255, 255)</string>
          </property>
          <property name="text">
           <string>Temperature</string>
@@ -122,7 +131,7 @@
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">color:rgb(255, 255, 255)</string>
          </property>
          <property name="text">
           <string>empty</string>
@@ -142,6 +151,9 @@
            <underline>true</underline>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">color:rgb(255, 255, 255)</string>
+         </property>
          <property name="text">
           <string>Humidity</string>
          </property>
@@ -158,6 +170,9 @@
            <weight>75</weight>
            <bold>true</bold>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color:rgb(255, 255, 255)</string>
          </property>
          <property name="text">
           <string>empty</string>
@@ -177,6 +192,9 @@
            <underline>true</underline>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">color:rgb(255, 255, 255)</string>
+         </property>
          <property name="text">
           <string>Pressure</string>
          </property>
@@ -193,6 +211,9 @@
            <weight>75</weight>
            <bold>true</bold>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color:rgb(255, 255, 255)</string>
          </property>
          <property name="text">
           <string>empty</string>
@@ -212,6 +233,9 @@
            <underline>true</underline>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">color:rgb(255, 255, 255)</string>
+         </property>
          <property name="text">
           <string>Time</string>
          </property>
@@ -228,6 +252,9 @@
            <weight>75</weight>
            <bold>true</bold>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color:rgb(255, 255, 255)</string>
          </property>
          <property name="text">
           <string>empty</string>
@@ -248,7 +275,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>26</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
@@ -260,6 +287,9 @@
    </property>
    <property name="windowTitle">
     <string>toolBar</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(255, 255, 255)</string>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
@@ -290,7 +320,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>10</pointsize>
+     <pointsize>11</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -309,6 +339,11 @@
    <property name="text">
     <string>Temperature</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionHumidity">
    <property name="checkable">
@@ -317,6 +352,11 @@
    <property name="text">
     <string>Humidity</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionPressure">
    <property name="checkable">
@@ -324,6 +364,11 @@
    </property>
    <property name="text">
     <string>Pressure</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionconnectIcon">

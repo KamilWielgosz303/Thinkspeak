@@ -11,12 +11,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->chartView->setRenderHint(QPainter::Antialiasing);
     chart = new Chart();
     ui->chartView->setChart(chart->chart);
+
     QLinearGradient windowGradient;
     windowGradient.setStart(QPointF(0, 1));
     windowGradient.setFinalStop(QPointF(1, 0));
     windowGradient.setColorAt(0.0, QRgb(0xe21e13));
     windowGradient.setColorAt(1.0, QRgb(0x000000));
     windowGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
+    QBrush brush(windowGradient);
+    QPalette palette;
+    palette.setBrush(QPalette::Window,brush);
+    this->setPalette(palette);                                                  //Ustawienie koloru tła
 
     QUrl myurl;
     this->setCentralWidget(ui->horizontalFrame);
